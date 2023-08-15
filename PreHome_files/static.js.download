@@ -1,0 +1,130 @@
+$(document).ready(function () {
+    var timerVar;
+
+    $('#form03').validate({
+        rules: {
+            subscribeEmail: {
+                required:  true,
+                email: true
+            }
+        },
+        messages: {
+            subscribeEmail: "Enter a valid email address",
+        }
+    });
+
+    $('#emailForm').validate({
+        rules: {
+            name: {
+                required: true,
+                maxlength: 100
+            },
+            mobileNumber: {
+                required: true,
+                number: true,
+                minlength: 10,
+                maxlength: 10
+            },
+            email: {
+                required:  true,
+                email: true
+            },
+            message: {
+                required: true,
+                maxlength: 1000
+            }
+        },
+        messages: {
+            mobileNumber: "Valid Mobile number should be 10 digits",
+            email: "Enter a valid email address",
+            name: "Enter a valid Name",
+            message: "Enter some message to send"
+        }
+    });
+
+    $("#subscribe").on('click', function() {
+        if (!$('#form03').valid()) {
+            return false;
+          }
+          else {
+            var emailData = {};        
+            emailData.email = $("#subscribeEmail").val();
+            const domain = emailData.email.substring(emailData.email.indexOf("@")+1);
+            $.get("https://api.mailcheck.ai/domain/" + domain, function(data) {
+                if (data.disposable) {
+                    alert("The email id you've provided is a disposable email address. Provide your real email address");
+                    $("#subscribeEmail").focus();
+                }
+                else {
+                    $.ajax({
+                        type: 'post',
+                        url:  '/repo/rest/subscribe.php',
+                        data: emailData,
+                        success: function (data) {
+                            $("#statusMessage").css("display", "block");
+                            $("#statusMessage").html("<img src='/repo/images/success.png' style='vertical-align:middle'>&nbsp;Subscribed ! We'll notify you when we launch");
+                            timerVar = setTimeout(hideMessage, 5000);
+                        },
+                        error: function(message) {					
+                            $("#statusMessage").css("display", "block");	
+                            $("#statusMessage").html("<img src='/repo/images/failed.png' style='vertical-align:middle'>&nbsp;" + JSON.parse(message.responseText).message);
+                            timerVar = setTimeout(hideMessage, 5000);                            
+                        }
+                    });
+                }
+            });
+        }        
+    });
+
+    function hideMessage() {      
+        $("#statusMessage").css("display", "none");
+        $("#emailStatus").css("display", "none");
+        clearTimeout(timerVar);
+    }
+
+    $("#send").click(function() {
+        if (!$('#emailForm').valid()) {
+          return false;
+        }
+        else {
+            const domain = $("#email").val().substring($("#email").val().indexOf("@")+1);
+            $.get("https://api.mailcheck.ai/domain/" + domain, function(data) {            
+                if (data.disposable) {
+                    alert("The email id you've provided is a disposable email address. Provide your real email address");
+                    $("#email").focus();
+                }
+                else {
+                    submit();
+                }        
+            });        
+        }
+      });
+      function submit() {                
+        var data = {};
+        data.subject = "New Customer - Contact request";
+        data.email = $("#email").val();          
+        data.body = "<b>Name : </b>" + $("#name").val() +
+            "<br/><br/><b>Mobile Number</b>: " + $("#mobileNumber").val() +
+            "<br/><br/><b>Email</b>: " + $("#email").val() +
+            "<br/><br/><b>Message</b>: <br/>" + $("#message").val();
+        $.ajax({
+            type: 'post',
+            url: '/repo/rest/mail-service.php',
+            data: data,
+            success: function (response) {              
+              $("#name").val("");
+              $("#mobileNumber").val("");
+              $("#email").val("");
+              $("#message").val("");
+              $("#emailStatus").css("display", "block");	
+              $("#emailStatus").html("<img src='/repo/images/success.png' style='vertical-align:middle'>&nbsp;Email sent !");
+              timerVar = setTimeout(hideMessage, 5000);
+            },
+            error: function() {
+                $("#emailStatus").css("display", "block");	
+                $("#emailStatus").html("<img src='/repo/images/failed.png' style='vertical-align:middle'>&nbsp;Email sending failed !");
+                timerVar = setTimeout(hideMessage, 5000);
+            }
+        });     
+      }
+});

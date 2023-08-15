@@ -1,0 +1,117 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Instrument Sans", Arial, Helvetica, sans-serif;
+}
+
+
+.blog-links-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap; 
+    max-width: 80%;
+    margin: auto;
+}
+
+.resources-heading a {
+    text-decoration: none;
+}
+
+.blog-link-container {
+    background-color: rgb(20, 118, 145);
+    border-radius: 25px;
+    text-align: center;
+    padding: 30px;
+    z-index: 2;
+}
+
+.blog-link-container-outer {
+    width: 30%;
+    margin-bottom: 0px;
+    text-align: center;
+    margin-top: 20px;
+}
+.blog-link-container img{
+    max-width: 100%;
+    margin: auto;
+    border-radius: 5px;
+    
+    /* margin-top: 20px; */
+}
+
+.blog-link-container h6 {
+    color: #eee;
+    font-size: 20px;
+    text-align: left;
+    margin-top: 5px;
+}
+
+.blog-link-container p {
+    color: #eee;
+    margin: 10px 0px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.resources-heading {
+    margin-bottom: 10px;
+    padding: 30px 4%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resources-heading h2 { 
+    color: #eee;
+    letter-spacing: -0.075rem;
+    font-size: 2.25em;
+}
+
+.resources-heading a {
+    color: #eee;
+    font-size: 1.25em;
+
+}
+
+.blog-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.resources {
+    /* background-image: url("../img/hero-bg.svg"); */
+    margin: 60px 0px;
+}
+
+.resources span {
+    color: #fff;
+    font-size: 14px;
+}
+
+.blog-link-container:hover {
+    top: -10px;
+    transform: scaleX(0.98) scaleY(1.03) translateY(-43px);
+    --awb-transform-hover: scaleX(1) scaleY(1) translateY(0px);
+    --awb-transform-parent-hover: scaleX(1) scaleY(1) translateY(0px);
+    transition: transform 300ms ease,filter 300ms ease,background-color 300ms ease,border-color 300ms ease;
+}
+
+.blog-links-container a {
+    z-index: -1;
+    background: #dba950;
+    color: #FFf;
+    border-color: #FFF;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 10px 23px;
+    margin: 0px 30px 0px;
+    display: block;
+    border-radius: 0px 0px 15px 15px;
+    top: -41px;
+    position: relative;
+    text-decoration: none;
+}
+
+
